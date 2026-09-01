@@ -1,0 +1,18 @@
+# Local guard MODELS. torch has no Python 3.14 wheels yet, but this machine
+# has Python 3.13, which works. The models venv is already built with:
+#
+#   C:\...\Python313\python.exe -m venv .venv-models
+#   .venv-models\Scripts\Activate.ps1
+#   python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+#   python -m pip install -r requirements-local-models.txt
+#
+# torch 2.13.0+cpu installed and verified. CPU is fine for the small ungated
+# guards; use a CUDA torch build for the gated Meta models on a GPU box.
+
+transformers>=4.44
+huggingface_hub>=0.24
+sentencepiece            # DeBERTa-v3 tokenizer
+protobuf                 # tokenizer deserialisation
+accelerate>=0.33
+python-dotenv>=1.0
+# torch installed separately from the CPU index (see comment above)

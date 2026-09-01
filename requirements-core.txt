@@ -1,0 +1,30 @@
+# Core experiment deps — cloud guardrail SDKs + data handling.
+# Pure-Python; installs cleanly on Python 3.14.
+# Install:  python -m pip install -r requirements-core.txt
+
+# --- config / secrets ---
+python-dotenv>=1.0
+
+# --- AWS Bedrock Guardrails (control plane + runtime) ---
+boto3>=1.35
+
+# --- Azure AI Content Safety (Prompt Shields + text moderation) ---
+azure-ai-contentsafety>=1.0.0
+azure-core>=1.30
+
+# --- Google Vertex AI Model Armor ---
+google-cloud-modelarmor>=0.2.0
+google-api-core>=2.19
+
+# --- HTTP (Llama Guard hosted, Lakera, generic) ---
+httpx>=0.27
+
+# --- data / analysis ---
+datasets>=2.20          # loading MHJ, WildChat, etc. from Hugging Face
+pandas>=2.2
+pyarrow>=16.0           # parquet
+numpy>=1.26
+scipy>=1.13             # Wilson intervals, McNemar, bootstrap
+statsmodels>=0.14       # Cochran's Q, proportion tests
+matplotlib>=3.8         # figures
+tqdm>=4.66              # progress bars

@@ -1,0 +1,34 @@
+# secrets — never commit
+.env
+.env.*
+!.env.example
+provisioned.*.json
+*.key
+*-key.json
+service-account*.json
+# GCP service-account keys (auto-generated names start with the project id)
+project-*.json
+*serviceaccount*.json
+*.iam.gserviceaccount.com.json
+gcp-key.json
+# anything holding a private key, defensively
+*credential*.json
+*secret*.json
+
+# python
+.venv/
+.venv-models/
+__pycache__/
+*.pyc
+
+# data & results (large / license-restricted)
+data/
+results/
+cache/
+*.sqlite
+*.parquet
+
+# model weights
+models/
+*.safetensors
+*.bin

@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+title: "GuardGap: Per-Detector Measurement of Commercial LLM Guardrails under Multi-Turn Attacks"
+message: "If you use this software, please cite the accompanying paper."
+type: software
+authors:
+  - family-names: Thakkar
+    given-names: Manav
+    email: manavsutd@gmail.com
+repository-code: "https://github.com/<your-username>/guardgap"
+license: Apache-2.0
+keywords:
+  - ai-security
+  - llm-guardrails
+  - content-moderation
+  - multi-turn-jailbreaks
+  - security-measurement
+preferred-citation:
+  type: conference-paper
+  title: "What the Guardrail Sees: Per-Detector Measurement of Commercial LLM Guardrails under Multi-Turn Attacks"
+  authors:
+    - family-names: Thakkar
+      given-names: Manav
+  year: 2027
+  # collection-title, doi, and pages to be added once published in IEEE Xplore
