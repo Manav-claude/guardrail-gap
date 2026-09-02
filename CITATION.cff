@@ -6,7 +6,7 @@ authors:
   - family-names: Thakkar
     given-names: Manav
     email: manavsutd@gmail.com
-repository-code: "https://github.com/<your-username>/guardgap"
+repository-code: "https://github.com/Manav-claude/guardrail-gap"
 license: Apache-2.0
 keywords:
   - ai-security
