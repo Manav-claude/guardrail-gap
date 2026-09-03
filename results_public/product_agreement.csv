@@ -1,0 +1,7 @@
+product_a,product_b,jaccard_detected_last,phi
+bedrock,azure_prompt_shields,0.0006,0.0141
+bedrock,azure_text,0.1424,0.1477
+bedrock,model_armor,0.6733,0.3116
+azure_prompt_shields,azure_text,0.0000,-0.0072
+azure_prompt_shields,model_armor,0.0005,0.0106
+azure_text,model_armor,0.1423,0.1768

@@ -1,0 +1,4 @@
+product,n,cdr_last,cdr_full,gmg_last_to_full,mcnemar_p,only_last,only_full,config_induced,model_induced,auroc_last,auroc_full
+protectai_deberta,2489,0.1599,0.0796,-0.0804,1.04e-26,273,73,-0.0804,0.9204,0.5124,0.4871
+qwen3guard,2489,0.3254,0.2933,-0.0321,2.68e-05,217,137,-0.0321,0.7067,0.8053,0.7593
+prompt_guard2,2489,0.0281,0.0133,-0.0149,8e-06,51,14,-0.0149,0.9867,0.6845,0.6366

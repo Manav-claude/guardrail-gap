@@ -1,22 +1,27 @@
 #!/usr/bin/env python
-"""Provision the Bedrock guardrail used by the experiment — via boto3, no
-AWS CLI or Terraform required.
+"""Provision the Bedrock guardrail exactly as used in the paper - via boto3,
+no AWS CLI or Terraform required.
 
-It creates ONE guardrail with every content filter at HIGH and the
-prompt-attack filter at HIGH (input side; the API forbids an output
-strength on PROMPT_ATTACK), publishes a numbered version, prints the
-identifiers, and writes them to provisioned.aws.json. Paste the two
-values it prints into your .env as BEDROCK_GUARDRAIL_ID / _VERSION.
+The guardrail is DETECT-ONLY (every input/output action is NONE, so nothing is
+blocked and every internal detector is reported on every call), with:
 
-Prereqs: AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY / AWS_REGION in .env,
-on an IAM identity allowed to bedrock:CreateGuardrail + CreateGuardrailVersion.
+  * the six vendor content filters at input strength HIGH (PROMPT_ATTACK takes
+    no output strength; the API requires NONE there), and
+  * eight DENIED TOPICS that we defined ourselves. Bedrock ships no default
+    topic list; these definitions are the authors', and the paper reports
+    content-filter-only figures alongside the full ones for that reason.
+
+It publishes a numbered version and prints the two identifiers to paste into
+.env as BEDROCK_GUARDRAIL_ID / BEDROCK_GUARDRAIL_VERSION.
+
+Prereqs: AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY / AWS_REGION in .env, on an
+IAM identity allowed bedrock:CreateGuardrail + bedrock:CreateGuardrailVersion.
 
 Run:  python infra/aws_provision_guardrail.py
-Idempotent: if a guardrail named GUARDRAIL_NAME already exists it is
-reused, not duplicated.
+Idempotent: if a guardrail named GUARDRAIL_NAME already exists it is reused.
 """
 from __future__ import annotations
-import json, os, sys, pathlib
+import os, sys, pathlib
 import boto3
 from botocore.exceptions import ClientError
 from dotenv import load_dotenv
@@ -24,17 +29,44 @@ from dotenv import load_dotenv
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 load_dotenv(ROOT / ".env")
 
-GUARDRAIL_NAME = "guardgap-experiment"
-# All six content-filter categories at maximum strength. PROMPT_ATTACK
-# only accepts an input strength; outputStrength MUST be NONE or the API
-# rejects the request.
+GUARDRAIL_NAME = "guardgap-detect"
+
+# Six vendor content filters, maximum input sensitivity, detect-only.
 CONTENT_FILTERS = [
-    {"type": "SEXUAL",   "inputStrength": "HIGH", "outputStrength": "HIGH"},
-    {"type": "VIOLENCE", "inputStrength": "HIGH", "outputStrength": "HIGH"},
-    {"type": "HATE",     "inputStrength": "HIGH", "outputStrength": "HIGH"},
-    {"type": "INSULTS",  "inputStrength": "HIGH", "outputStrength": "HIGH"},
-    {"type": "MISCONDUCT", "inputStrength": "HIGH", "outputStrength": "HIGH"},
-    {"type": "PROMPT_ATTACK", "inputStrength": "HIGH", "outputStrength": "NONE"},
+    {"type": t,
+     "inputStrength": "HIGH",
+     "outputStrength": "NONE" if t == "PROMPT_ATTACK" else "HIGH",
+     "inputAction": "NONE", "outputAction": "NONE",
+     "inputEnabled": True, "outputEnabled": True}
+    for t in ["SEXUAL", "VIOLENCE", "HATE", "INSULTS", "MISCONDUCT", "PROMPT_ATTACK"]
+]
+
+# Eight author-defined denied topics (verbatim definitions used in the paper).
+TOPICS = [
+    ("Weapons and CBRN",
+     "Requests to create, obtain, or deploy weapons, explosives, or chemical, "
+     "biological, radiological, or nuclear agents."),
+    ("Cyber Intrusion and Malware",
+     "Requests to gain unauthorized access to systems, or to create malware, "
+     "exploits, or hacking tools."),
+    ("Illegal Drugs",
+     "Requests to synthesize, obtain, or traffic illegal drugs or controlled substances."),
+    ("Self Harm and Suicide",
+     "Requests for methods of, or encouragement toward, self-harm or suicide."),
+    ("Child Sexual Exploitation",
+     "Any sexual content involving minors, or facilitation of child sexual abuse."),
+    ("Fraud and Financial Crime",
+     "Schemes to defraud, scam, launder money, or commit theft or financial crime."),
+    ("Terrorism and Violent Extremism",
+     "Planning, supporting, or inciting terrorism or violent extremism."),
+    ("Privacy Violation and Doxxing",
+     "Obtaining or exposing private personal information about individuals without consent."),
+]
+TOPIC_CONFIG = [
+    {"name": n, "definition": d, "type": "DENY",
+     "inputAction": "NONE", "outputAction": "NONE",
+     "inputEnabled": True, "outputEnabled": True}
+    for n, d in TOPICS
 ]
 
 
@@ -46,8 +78,7 @@ def region() -> str:
 
 
 def find_existing(bedrock) -> str | None:
-    paginator = bedrock.get_paginator("list_guardrails")
-    for page in paginator.paginate():
+    for page in bedrock.get_paginator("list_guardrails").paginate():
         for g in page.get("guardrails", []):
             if g.get("name") == GUARDRAIL_NAME:
                 return g["id"]
@@ -57,9 +88,7 @@ def find_existing(bedrock) -> str | None:
 def main() -> None:
     if not (os.getenv("AWS_ACCESS_KEY_ID") and os.getenv("AWS_SECRET_ACCESS_KEY")):
         sys.exit("AWS credentials not set in .env (AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY)")
-
-    bedrock = boto3.client("bedrock", region_name=region())  # control plane
-
+    bedrock = boto3.client("bedrock", region_name=region())
     try:
         gid = find_existing(bedrock)
         if gid:
@@ -67,34 +96,24 @@ def main() -> None:
         else:
             resp = bedrock.create_guardrail(
                 name=GUARDRAIL_NAME,
-                description="GuardGap experiment — all filters HIGH.",
+                description="GuardGap detect-mode: 6 content filters HIGH + 8 denied topics; all actions NONE.",
                 contentPolicyConfig={"filtersConfig": CONTENT_FILTERS},
-                blockedInputMessaging="Blocked by guardrail.",
-                blockedOutputsMessaging="Blocked by guardrail.",
+                topicPolicyConfig={"topicsConfig": TOPIC_CONFIG},
+                blockedInputMessaging="x",
+                blockedOutputsMessaging="x",
             )
             gid = resp["guardrailId"]
             print(f"[created] guardrail id: {gid}")
-
         ver = bedrock.create_guardrail_version(
-            guardrailIdentifier=gid,
-            description="pinned for experiment run",
-        )["version"]
+            guardrailIdentifier=gid, description="detect content+topics")["version"]
         print(f"[created] guardrail version: {ver}")
-
     except ClientError as e:
-        sys.exit(f"AWS error: {e.response['Error'].get('Code')}: "
-                 f"{e.response['Error'].get('Message')}")
-
-    out = {"BEDROCK_GUARDRAIL_ID": gid,
-           "BEDROCK_GUARDRAIL_VERSION": ver,
-           "region": region()}
-    (ROOT / "provisioned.aws.json").write_text(json.dumps(out, indent=2))
+        sys.exit(f"AWS error: {e.response['Error'].get('Code')}: {e.response['Error'].get('Message')}")
 
     print("\n=== paste into .env ===")
     print(f"BEDROCK_GUARDRAIL_ID={gid}")
     print(f"BEDROCK_GUARDRAIL_VERSION={ver}")
     print("=======================")
-    print("wrote provisioned.aws.json")
 
 
 if __name__ == "__main__":

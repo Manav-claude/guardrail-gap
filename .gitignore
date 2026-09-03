@@ -32,3 +32,6 @@ cache/
 models/
 *.safetensors
 *.bin
+
+# aggregate results (rates/counts only; no conversation text) are published
+!results_public/

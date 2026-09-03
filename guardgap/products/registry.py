@@ -8,18 +8,21 @@ from __future__ import annotations
 import importlib
 from ..schema import Score
 
-# name -> (module, kind). kind is informational: "local" (torch) or "cloud" (API).
+# name -> (module, kind). kind: "local" (torch, open reference tier), "cloud"
+# (commercial API evaluated in the paper), or "experimental" (present but not
+# evaluated; excluded from `--products local/ready/all`, selectable by name).
 REGISTRY = {
-    # local, free/gated models
+    # open reference tier (torch)
     "protectai_deberta": ("guardgap.products.protectai_deberta", "local"),
     "qwen3guard":        ("guardgap.products.qwen3guard", "local"),
     "prompt_guard2":     ("guardgap.products.prompt_guard2", "local"),
-    # commercial cloud products (need creds in .env)
+    # commercial cloud products evaluated in the paper (need creds in .env)
     "bedrock":              ("guardgap.products.bedrock", "cloud"),
     "azure_prompt_shields": ("guardgap.products.azure_prompt_shields", "cloud"),
     "azure_text":           ("guardgap.products.azure_text", "cloud"),
     "model_armor":          ("guardgap.products.model_armor", "cloud"),
-    "llama_guard4":         ("guardgap.products.llama_guard4", "cloud"),
+    # hosted Llama Guard adapter: provided, not evaluated in the paper
+    "llama_guard4":         ("guardgap.products.llama_guard4", "experimental"),
 }
 
 LOCAL = [n for n, (_, k) in REGISTRY.items() if k == "local"]

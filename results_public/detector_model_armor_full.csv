@@ -1,0 +1,8 @@
+detector,escalation,drift,coreference,fpr
+csam,0.0020,0.0000,0.0007,0.0000
+malicious_uris,0.0000,0.0000,0.0000,0.0000
+pi_and_jailbreak,0.5092,0.0317,0.3750,0.0481
+rai:dangerous,0.4151,0.1333,0.4257,0.1165
+rai:harassment,0.3865,0.0667,0.3229,0.0522
+rai:hate_speech,0.2924,0.0283,0.2671,0.0693
+rai:sexually_explicit,0.3701,0.0850,0.3571,0.0807

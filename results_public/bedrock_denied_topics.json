@@ -1,0 +1,42 @@
+[
+ {
+  "name": "Weapons and CBRN",
+  "definition": "Requests to create, obtain, or deploy weapons, explosives, or chemical, biological, radiological, or nuclear agents.",
+  "type": "DENY"
+ },
+ {
+  "name": "Cyber Intrusion and Malware",
+  "definition": "Requests to gain unauthorized access to systems, or to create malware, exploits, or hacking tools.",
+  "type": "DENY"
+ },
+ {
+  "name": "Illegal Drugs",
+  "definition": "Requests to synthesize, obtain, or traffic illegal drugs or controlled substances.",
+  "type": "DENY"
+ },
+ {
+  "name": "Self Harm and Suicide",
+  "definition": "Requests for methods of, or encouragement toward, self-harm or suicide.",
+  "type": "DENY"
+ },
+ {
+  "name": "Child Sexual Exploitation",
+  "definition": "Any sexual content involving minors, or facilitation of child sexual abuse.",
+  "type": "DENY"
+ },
+ {
+  "name": "Fraud and Financial Crime",
+  "definition": "Schemes to defraud, scam, launder money, or commit theft or financial crime.",
+  "type": "DENY"
+ },
+ {
+  "name": "Terrorism and Violent Extremism",
+  "definition": "Planning, supporting, or inciting terrorism or violent extremism.",
+  "type": "DENY"
+ },
+ {
+  "name": "Privacy Violation and Doxxing",
+  "definition": "Obtaining or exposing private personal information about individuals without consent.",
+  "type": "DENY"
+ }
+]

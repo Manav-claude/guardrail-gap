@@ -1,0 +1,5 @@
+product,n,cdr_last,cdr_full,gmg_last_to_full,mcnemar_p,only_last,only_full,config_induced,model_induced,auroc_last,auroc_full
+bedrock,2489,0.6701,0.5914,-0.0787,2.39e-27,260,64,-0.0787,0.4086,0.7750,0.7385
+azure_prompt_shields,2489,0.0004,0.0008,+0.0004,1,0,1,+0.0004,0.9992,0.4949,0.4951
+azure_text,2489,0.1129,0.1129,+0.0000,0.929,63,63,+0.0000,0.8871,0.6666,0.6727
+model_armor,2489,0.7806,0.6372,-0.1434,3.27e-66,393,36,-0.1434,0.3628,0.7222,0.7265

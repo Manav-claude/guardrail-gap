@@ -1,0 +1,15 @@
+detector,escalation,drift,coreference,fpr
+content:HATE,0.1125,0.0217,0.0907,0.0236
+content:INSULTS,0.0368,0.0000,0.0229,0.0179
+content:MISCONDUCT,0.2699,0.1333,0.2264,0.0261
+content:PROMPT_ATTACK,0.5235,0.0000,0.0114,0.0970
+content:SEXUAL,0.0389,0.0050,0.0557,0.0293
+content:VIOLENCE,0.1411,0.0400,0.0793,0.0220
+topic:Child Sexual Exploitation,0.0204,0.0133,0.0193,0.0041
+topic:Cyber Intrusion and Malware,0.1043,0.2033,0.0243,0.0114
+topic:Fraud and Financial Crime,0.2147,0.1267,0.0921,0.0041
+topic:Illegal Drugs,0.0389,0.0567,0.0986,0.0098
+topic:Privacy Violation and Doxxing,0.0204,0.0867,0.0164,0.0073
+topic:Self Harm and Suicide,0.0286,0.0050,0.0150,0.0000
+topic:Terrorism and Violent Extremism,0.1452,0.1067,0.0379,0.0024
+topic:Weapons and CBRN,0.0695,0.0617,0.0500,0.0041

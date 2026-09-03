@@ -36,6 +36,17 @@ def check_azure_prompt_shields() -> str:
     return f"attackDetected={r.json()['userPromptAnalysis']['attackDetected']}"
 
 
+def check_azure_text() -> str:
+    import httpx
+    ep = S.get("AZURE_CONTENT_SAFETY_ENDPOINT").rstrip("/")
+    url = f"{ep}/contentsafety/text:analyze?api-version=2024-09-01"
+    r = httpx.post(url, headers={"Ocp-Apim-Subscription-Key": S.get("AZURE_CONTENT_SAFETY_KEY")},
+                   json={"text": BENIGN, "outputType": "EightSeverityLevels"}, timeout=30)
+    r.raise_for_status()
+    sev = max((c.get("severity", 0) for c in r.json().get("categoriesAnalysis", [])), default=0)
+    return f"max severity={sev} (0-7 scale)"
+
+
 def check_model_armor() -> str:
     from google.cloud import modelarmor_v1
     loc = S.get("GCP_LOCATION")
@@ -83,6 +94,7 @@ def check_qwen3guard() -> str:
 CHECKS = {
     "bedrock": check_bedrock,
     "azure_prompt_shields": check_azure_prompt_shields,
+    "azure_text": check_azure_text,
     "model_armor": check_model_armor,
     "prompt_guard2": check_prompt_guard2,
     "llama_guard4": check_llama_guard4,
