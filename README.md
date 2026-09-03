@@ -21,8 +21,8 @@ call, and reports:
   pass at maximum sensitivity recovers behaviour at every filter strength.
 - **Cost, latency, and inspected coverage** from service-reported usage.
 
-It accompanies the paper *What the Guardrail Sees: Per-Detector Measurement of
-Commercial LLM Guardrails under Multi-Turn Attacks* (IEEE ACDSA 2027,
+It accompanies the paper *Many Looks Beat One Look: Why Full Context Does Not Help Commercial
+LLM Guardrails Against Multi-Turn Attacks* (IEEE ACDSA 2027,
 submitted). The aggregate results reported in the paper are in
 `results_public/` (rates, counts, and definitions only; no conversation text).
 

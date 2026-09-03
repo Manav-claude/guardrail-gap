@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-title: "GuardGap: Per-Detector Measurement of Commercial LLM Guardrails under Multi-Turn Attacks"
+title: "GuardGap: measurement harness for commercial LLM guardrails under multi-turn attacks"
 message: "If you use this software, please cite the accompanying paper."
 type: software
 authors:
@@ -16,7 +16,7 @@ keywords:
   - security-measurement
 preferred-citation:
   type: conference-paper
-  title: "What the Guardrail Sees: Per-Detector Measurement of Commercial LLM Guardrails under Multi-Turn Attacks"
+  title: "Many Looks Beat One Look: Why Full Context Does Not Help Commercial LLM Guardrails Against Multi-Turn Attacks"
   authors:
     - family-names: Thakkar
       given-names: Manav
