@@ -23,7 +23,7 @@ call, and reports:
 
 It accompanies the paper *Many Looks Beat One Look: Why Full Context Does Not Help Commercial
 LLM Guardrails Against Multi-Turn Attacks* (IEEE ACDSA 2027,
-submitted). The aggregate results reported in the paper are in
+accepted; Rio de Janeiro, February 2027). The aggregate results reported in the paper are in
 `results_public/` (rates, counts, and definitions only; no conversation text).
 
 ## Quick start

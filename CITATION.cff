@@ -21,4 +21,7 @@ preferred-citation:
     - family-names: Thakkar
       given-names: Manav
   year: 2027
-  # collection-title, doi, and pages to be added once published in IEEE Xplore
+  collection-title: "Proceedings of the 4th International Conference on Artificial Intelligence, Computer, Data Sciences and Applications (ACDSA)"
+  publisher:
+    name: IEEE
+  # doi and pages to be added once published in IEEE Xplore
